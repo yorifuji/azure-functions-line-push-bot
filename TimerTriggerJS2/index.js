@@ -50,17 +50,18 @@ function format_message(tweets)
     //  rainy '\u2614'
 
     var tweet = tweets[0].text;
-    tweet = tweet.replace(/[\d]+時発表 /,   "\n");
-    tweet = tweet.replace("#tenkijp_横浜 ", "\n");
-
     var weather_emoji = "";
-    var re =  /(今日|明日)の天気 (.+) /;
-    var weather = tweet.match(re);
-    if (weather) {
-	if (weather[1].indexOf("雨"))      weather_emoji = "\u2614";
-	else if (weather[1].indexOf("晴")) weather_emoji = "\u2600";
+    try {
+	tweet = tweet.replace(/[\d]+時発表 /,   "\n");
+	tweet = tweet.replace("#tenkijp_横浜 ", "\n");
+	
+	var re =  /(横浜市の.+の天気) ([^ ]+) /;
+	var weather = tweet.match(re)[2];
+	tweet = tweet.replace(re, "$1 $2\n");
+	if      (weather.indexOf("雨")) weather_emoji = "\u2614";
+	else if (weather.indexOf("晴")) weather_emoji = "\u2600";
+    } catch(e) {
     }
-
     return Promise.resolve([{"type" : "text", "text" : weather_emoji + tweet}]);
 }
 
