@@ -27,7 +27,7 @@ function main(context)
     const query = 
           {
               "screen_name" : "yokohama_koutuu",
-              "count"       : 10
+//              "count"       : 10
           };
 
     twitter.get_timeline(query)
