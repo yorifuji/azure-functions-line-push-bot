@@ -33,9 +33,11 @@ function main(context)
     twitter.get_timeline(query)
         .then(filter_timeline)
         .then(format_message)
-        .then(push_line)
-        .then(res => {
-            context.log(res);
+        .then(messages => {
+            context.bindings.outputQueueItem = {
+                "to"       : process.env.LINE_PUSH_TO,
+                "messages" : messages
+            };
             context.done();
         })
         .catch(res => {
@@ -59,45 +61,3 @@ function format_message(tweets)
         tweets.map(tweet => ({"type" : "text", "text" : tweet.text}))
     );
 }
-
-function push_line(messages)
-{
-    if (!messages.length) return Promise.resolve();
-
-    return new Promise((resolve,reject) => {
-        var post_data = JSON.stringify({
-            "to" : process.env.LINE_PUSH_TO,
-            "messages" : messages
-        });
-        
-        var parse_url = url.parse("https://api.line.me/v2/bot/message/push");
-        var post_options = {
-            host: parse_url.host,
-            path: parse_url.path,
-            method: 'POST',
-            headers: {
-                'Content-Type'  : 'application/json',
-                'Authorization' : 'Bearer ' + process.env.LINE_CHANNEL_ACCESS_TOKEN,
-                'Content-Length': Buffer.byteLength(post_data)
-            }
-        };
-        
-        var post_req = https.request(post_options, res => {
-            var body = "";
-            res.setEncoding('utf8');
-            res.on('data', chunk => {
-                body += chunk;
-            });
-            res.on('end', () => {
-                resolve(body);
-            })
-            res.on('error', err => {
-                reject(new Error(err));
-            })
-        });
-        
-        post_req.write(post_data);
-        post_req.end();
-    });
-}
-

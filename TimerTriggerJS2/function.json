@@ -6,6 +6,13 @@
       "type": "timerTrigger",
       "direction": "in",
       "schedule": "0 0 13,22 * * *"
+    },
+    {
+      "type": "queue",
+      "name": "outputQueueItem",
+      "queueName": "outgoing-queue",
+      "connection": "AzureWebJobsDashboard",
+      "direction": "out"
     }
   ]
 }

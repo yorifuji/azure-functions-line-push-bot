@@ -32,9 +32,11 @@ function main(context)
 
     twitter.get_timeline(query)
         .then(format_message)
-        .then(push_line)
-        .then(res => {
-            context.log(res);
+        .then(message => {
+            context.bindings.outputQueueItem = {
+                "to"       : process.env.LINE_PUSH_TO,
+                "messages" : [ message ]
+            };
             context.done();
         })
         .catch(res => {
@@ -45,64 +47,18 @@ function main(context)
 
 function format_message(tweets)
 {
-    // unicode emoji
-    //  sunny '\u2600'
-    //  rainy '\u2614'
-
     var tweet = tweets[0].text;
     var weather_emoji = "";
     try {
-	tweet = tweet.replace(/[\d]+時発表 /,   "\n");
-	tweet = tweet.replace("#tenkijp_横浜 ", "\n");
-	
-	var re =  /(横浜市の.+の天気) ([^ ]+) /;
-	var weather = tweet.match(re)[2];
-	tweet = tweet.replace(re, "$1 $2\n");
-	if      (weather.indexOf("雨")) weather_emoji = "\u2614";
-	else if (weather.indexOf("晴")) weather_emoji = "\u2600";
+        tweet = tweet.replace(/[\d]+時発表 /,   "\n");
+        tweet = tweet.replace("#tenkijp_横浜 ", "\n");
+        
+        var re =  /(横浜市の.+の天気) ([^ ]+) /;
+        var weather = tweet.match(re)[2];
+        tweet = tweet.replace(re, "$1 $2\n");
+        if      (weather.indexOf("雨")) weather_emoji = "\u2614"; // add emoji: rainy
+        else if (weather.indexOf("晴")) weather_emoji = "\u2600"; // add emoji: sunny
     } catch(e) {
     }
-    return Promise.resolve([{"type" : "text", "text" : weather_emoji + tweet}]);
+    return Promise.resolve({"type" : "text", "text" : weather_emoji + tweet});
 }
-
-function push_line(messages)
-{
-    if (!messages.length) return Promise.resolve();
-
-    return new Promise((resolve,reject) => {
-        var post_data = JSON.stringify({
-            "to" : process.env.LINE_PUSH_TO,
-            "messages" : messages
-        });
-        
-        var parse_url = url.parse("https://api.line.me/v2/bot/message/push");
-        var post_options = {
-            host: parse_url.host,
-            path: parse_url.path,
-            method: 'POST',
-            headers: {
-                'Content-Type'  : 'application/json',
-                'Authorization' : 'Bearer ' + process.env.LINE_CHANNEL_ACCESS_TOKEN,
-                'Content-Length': Buffer.byteLength(post_data)
-            }
-        };
-        
-        var post_req = https.request(post_options, res => {
-            var body = "";
-            res.setEncoding('utf8');
-            res.on('data', chunk => {
-                body += chunk;
-            });
-            res.on('end', () => {
-                resolve(body);
-            })
-            res.on('error', err => {
-                reject(new Error(err));
-            })
-        });
-        
-        post_req.write(post_data);
-        post_req.end();
-    });
-}
-
