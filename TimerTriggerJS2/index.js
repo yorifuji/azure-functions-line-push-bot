@@ -57,10 +57,12 @@ function format_message(tweets)
         tweet = tweet.replace("#tenkijp_横浜 ", "\n");
         var re =  /(横浜市の.+の天気) ([^ ]+) /;
         var weather = tweet.match(re)[2];
-        for (var i = 0; weather && i < weather.length; i++) {
-            if      (weather.indexOf("晴")) weather_emoji += "\u2600"; // emoji: sunny
-            else if (weather.indexOf("曇")) weather_emoji += "\u2601"; // emoji: cloud
-            else if (weather.indexOf("雨")) weather_emoji += "\u2614"; // emoji: rainy
+	if (weather) {
+	    weather.split("").forEach(c => {
+		if      (c == "晴") weather_emoji += "\u2600"; // emoji: ☀️
+		else if (c == "曇") weather_emoji += "\u2601"; // emoji: ☁️
+		else if (c == "雨") weather_emoji += "\u2614"; // emoji: ☔️
+	    });
         }
         tweet = tweet.replace(re, "$1 $2\n");
     } catch(e) {
