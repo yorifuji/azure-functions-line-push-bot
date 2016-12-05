@@ -16,7 +16,10 @@ module.exports = function (context, myTimer) {
 if (require.main === module) {
     var context = {
         log : console.log,
-        done: () => {}
+        done: () => {
+            console.log(context.bindings.outputQueueItem);
+        },
+        bindings : {}
     };
     main(context);
 }
@@ -52,12 +55,14 @@ function format_message(tweets)
     try {
         tweet = tweet.replace(/[\d]+時発表 /,   "\n");
         tweet = tweet.replace("#tenkijp_横浜 ", "\n");
-        
         var re =  /(横浜市の.+の天気) ([^ ]+) /;
         var weather = tweet.match(re)[2];
+        for (var i = 0; weather && i < weather.length; i++) {
+            if      (weather.indexOf("晴")) weather_emoji += "\u2600"; // emoji: sunny
+            else if (weather.indexOf("曇")) weather_emoji += "\u2601"; // emoji: cloud
+            else if (weather.indexOf("雨")) weather_emoji += "\u2614"; // emoji: rainy
+        }
         tweet = tweet.replace(re, "$1 $2\n");
-        if      (weather.indexOf("雨")) weather_emoji = "\u2614"; // add emoji: rainy
-        else if (weather.indexOf("晴")) weather_emoji = "\u2600"; // add emoji: sunny
     } catch(e) {
     }
     return Promise.resolve({"type" : "text", "text" : weather_emoji + tweet});
