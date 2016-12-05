@@ -52,9 +52,9 @@ function format_message(tweets)
 {
     let tweet = tweets[0].text.replace(/#kinro/, "");
     return Promise.resolve(
-	{
-	    "type" : "text",
-	    "text" : "\u{1F4FA}" + tweet
-	}
+        {
+            "type" : "text",
+            "text" : "\u{1F4FA}" + tweet
+        }
     );
 }

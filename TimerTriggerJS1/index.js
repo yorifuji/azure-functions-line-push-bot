@@ -16,7 +16,10 @@ module.exports = function (context, myTimer) {
 if (require.main === module) {
     var context = {
         log : console.log,
-        done: () => {}
+        done: () => {
+            console.log(context.bindings.outputQueueItem);
+        },
+        bindings : {}
     };
     main(context);
 }
@@ -27,7 +30,7 @@ function main(context)
     const query = 
           {
               "screen_name" : "yokohama_koutuu",
-//              "count"       : 10
+              "count"       : 20
           };
 
     twitter.get_timeline(query)
@@ -58,6 +61,6 @@ function filter_timeline(tweets)
 function format_message(tweets)
 {
     return Promise.resolve(
-        tweets.map(tweet => ({"type" : "text", "text" : tweet.text}))
+        tweets.map(tweet => ({"type" : "text", "text" : "\u{1F683}\u{1F4A4}" + tweet.text}))
     );
 }
