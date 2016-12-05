@@ -44,18 +44,17 @@ function main(context)
             context.done();
         })
         .catch(res => {
-            context.log(res);
+            context.bindings.outputQueueItem = res;
             context.done();
         })
 }
 
 function filter_timeline(tweets)
 {
-    return Promise.resolve(
-        tweets.
-            filter(tweet => tweet.text.indexOf('【ブルーライン】運行情報') == 0).
-            filter(tweet => (new Date() - new Date(tweet.created_at)) / 1000 <= 60 * 10)
-    )
+    tweets = tweets
+        .filter(tweet => tweet.text.indexOf('【ブルーライン】運行情報') == 0)
+        .filter(tweet => (new Date() - new Date(tweet.created_at)) / 1000 <= 60 * 10);
+    return tweets.length ? Promise.resolve(tweets) : Promise.reject("no delay");
 }
 
 function format_message(tweets)
