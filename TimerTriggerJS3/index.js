@@ -54,7 +54,7 @@ function format_message(tweets)
     return Promise.resolve(
 	{
 	    "type" : "text",
-	    "text" : "\u1F4FA" + tweet
+	    "text" : "\u{1F4FA}" + tweet
 	}
     );
 }
