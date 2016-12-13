@@ -1,7 +1,4 @@
 
-var https = require("https");
-var url = require("url");
-
 module.exports = function (context, myTimer) {
     var timeStamp = new Date().toISOString();
     
