@@ -18,8 +18,14 @@ function process_request(context, body)
 {
     context.log(body);
 
+/*
+    body.events.filter(event => event.type == "message").forEach(event => {
+	context.log(event.source);
+	context.log(event.message);
+    });
+*/
     const slack = require("./slack.js");
-    slack.push(process.env.SLACK_WEBHOOK_URL, { "text" : "hello"})
+    slack.push(process.env.SLACK_WEBHOOK_URL, { "text" : body.events[0].message.text})
         .then(console.log)
         .catch(console.log)
 }
