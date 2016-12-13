@@ -59,7 +59,7 @@ function format_message(programs)
 	let content = program.content;
 	return {
 	    "type" : "text",
-	    "text" : `\u{1F4FA}${title}\u{1F4FA}\n${hour}時${minute}分〜\n（あらすじ）${subtitle}\n（詳細）${content}`
+	    "text" : `\u{1F4FA}${title}\u{1F4FA}\n${hour}時${minute}分〜\n（概要）${subtitle}\n（あらすじ）${content}`
 	}
     });
     
