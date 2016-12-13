@@ -17,4 +17,9 @@ module.exports = function(context, req) {
 function process_request(context, body)
 {
     context.log(body);
+
+    const slack = require("./slack.js");
+    slack.push(process.env.SLACK_WEBHOOK_URL, { "text" : "hello"})
+        .then(console.log)
+        .catch(console.log)
 }
