@@ -33,13 +33,13 @@ function main(context)
         .then(yahoo.get_rainfall_data)
         .then(yahoo.make_rainfall_message)
         .then(messages => {
-	    if (messages.length) {
-		context.bindings.outputQueueItem = {
+            if (messages.length) {
+                context.bindings.outputQueueItem = {
                     "to"       : process.env.LINE_PUSH_TO,
                     "messages" : messages
-		};
-		context.done();
-	    }
+                };
+                context.done();
+            }
         })
         .catch(res => {
             context.log(res);
