@@ -51,6 +51,7 @@ function format_message(programs)
 {
     var messages = programs.list.s3.map(program => {
 	let start  = new Date(program.start_time);
+	start.setTime(start.getTime() + 1000 * 60 * 60 * 9); // UTC --> JST
 	let hour   = start.getHours();
 	let minute = start.getMinutes();
 	let title  = program.title;
@@ -58,7 +59,7 @@ function format_message(programs)
 	let content = program.content;
 	return {
 	    "type" : "text",
-	    "text" : `\u{1F4FA}${hour}時${minute}分\n${title}\n${subtitle}\n${content}`
+	    "text" : `\u{1F4FA}${title}\u{1F4FA}\n${hour}時${minute}分〜\n（あらすじ）${subtitle}\n（詳細）${content}`
 	}
     });
     
