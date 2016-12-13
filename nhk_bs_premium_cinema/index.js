@@ -57,9 +57,10 @@ function format_message(programs)
 	let title  = program.title;
 	let subtitle  = program.subtitle;
 	let content = program.content;
+	const web_url = "https://goo.gl/gGyNBG";
 	return {
 	    "type" : "text",
-	    "text" : `\u{1F4FA}${title}\u{1F4FA}\n${hour}時${minute}分〜\n（概要）${subtitle}\n（あらすじ）${content}`
+	    "text" : `\u{1F4FA}${title} ${hour}時${minute}分〜\n（概要）${subtitle}\n（あらすじ）${content}\n${web_url}`
 	}
     });
     
