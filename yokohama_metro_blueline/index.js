@@ -41,7 +41,6 @@ function main(context)
             context.done();
         })
         .catch(res => {
-            context.bindings.outputQueueItem = res;
             context.done();
         })
 }
@@ -56,7 +55,5 @@ function filter_timeline(tweets)
 
 function format_message(tweets)
 {
-    return Promise.resolve(
-        tweets.map(tweet => ({"type" : "text", "text" : "\u{1F683}\u{1F4A4}" + tweet.text}))
-    );
+    return tweets.map(tweet => ({"type" : "text", "text" : "\u{1F683}\u{1F4A4}" + tweet.text}));
 }

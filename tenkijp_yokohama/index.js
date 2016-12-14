@@ -64,5 +64,5 @@ function format_message(tweets)
         tweet = tweet.replace(re, "$1 $2\n");
     } catch(e) {
     }
-    return Promise.resolve({"type" : "text", "text" : weather_emoji + tweet});
+    return {"type" : "text", "text" : weather_emoji + tweet};
 }
