@@ -23,7 +23,7 @@ if (require.main === module) {
 
 function main(context)
 {
-    const nhk = require("./nhk_api.js");
+    const nhk = require("../Shared/nhk_api.js");
     let query = {
         "area"    : "140",
         "service" : "s3",

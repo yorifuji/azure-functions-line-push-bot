@@ -23,7 +23,7 @@ if (require.main === module) {
 
 function main(context)
 {
-    const yahoo = require("./yahoo_rainfall.js");
+    const yahoo = require("../Shared/yahoo_rainfall.js");
 
     const api_key = process.env.YAHOO_APP_ID;
     const lon = process.env.LONGITUDE;

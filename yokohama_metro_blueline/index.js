@@ -23,7 +23,7 @@ if (require.main === module) {
 
 function main(context)
 {
-    var twitter = require("./twitter.js");
+    var twitter = require("../Shared/twitter.js");
     const query = 
           {
               "screen_name" : "yokohama_koutuu",
