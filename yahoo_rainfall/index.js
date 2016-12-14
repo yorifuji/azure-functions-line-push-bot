@@ -38,8 +38,8 @@ function main(context)
                     "to"       : process.env.LINE_PUSH_TO,
                     "messages" : messages
                 };
-                context.done();
             }
+            context.done();
         })
         .catch(res => {
             context.log(res);
