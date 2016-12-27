@@ -11,6 +11,13 @@
       "direction": "out",
       "name": "res"
     },
+    {
+      "type": "queue",
+      "name": "outputQueueItem",
+      "queueName": "outgoing-slack-queue",
+      "connection": "AzureWebJobsDashboard",
+      "direction": "out"
+    }
   ],
   "disabled": false
 }

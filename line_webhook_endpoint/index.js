@@ -4,7 +4,7 @@ module.exports = function(context, req) {
     const line = require("../Shared/line.js");
 
     if (line.validate_signature(req.headers['x-line-signature'], req.body)) {
-        process_request(context, req.body);
+        context.bindings.outputQueueItem = process_request(context, req.body);
     }
     else {
         context.log('fail to validate signature');
@@ -16,16 +16,9 @@ module.exports = function(context, req) {
 
 function process_request(context, body)
 {
-    context.log(body);
-
-/*
-    body.events.filter(event => event.type == "message").forEach(event => {
-        context.log(event.source);
-        context.log(event.message);
+    return body.events.filter(event => event.type == "message").map(msg => {
+        return {
+            "text" : msg.message.text
+        };
     });
-*/
-    const slack = require("../Shared/slack.js");
-    slack.push(process.env.SLACK_WEBHOOK_URL, { "text" : body.events[0].message.text})
-        .then(console.log)
-        .catch(console.log)
 }
