@@ -48,7 +48,7 @@ function main(context)
 function format_message(tweets)
 {
     let tweet = tweets[0].text;
-    tweet = tweet.slice(0, tweet.search("\n"))
+    tweet = tweet.slice(0, tweet.search("\n")) + "\n" + "https://kinro.jointv.jp/"
     return {
         "type" : "text",
         "text" : "\u{1F4FA}" + tweet
