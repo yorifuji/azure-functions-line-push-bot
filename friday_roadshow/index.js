@@ -26,7 +26,7 @@ function main(context)
     var twitter = require("../Shared/twitter.js");
     const query = 
           {
-              "screen_name" : "friday_roadshow",
+              "screen_name" : "eigaie_bot",
               "count"       : 1
           };
 
@@ -47,7 +47,8 @@ function main(context)
 
 function format_message(tweets)
 {
-    let tweet = tweets[0].text.replace(/#kinro/, "");
+    let tweet = tweets[0].text;
+    tweet = tweet.slice(0, tweet.search("\n"))
     return {
         "type" : "text",
         "text" : "\u{1F4FA}" + tweet
