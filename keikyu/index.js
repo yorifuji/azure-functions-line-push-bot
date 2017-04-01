@@ -48,12 +48,20 @@ function main(context)
 function filter_timeline(tweets)
 {
     tweets = tweets
-        .filter(tweet => tweet.text.indexOf('【運行情報】') )
-        .filter(tweet => (new Date() - new Date(tweet.created_at)) / 1000 <= 60 * 10);
+        .filter(tweet => tweet.text.indexOf('【運行情報】'))
+        .filter(tweet => (new Date() - new Date(tweet.created_at)) / 1000 <= 60 * 10)
     return tweets.length ? Promise.resolve(tweets) : Promise.reject("no delay");
 }
 
 function format_message(tweets)
 {
-    return tweets.map(tweet => ({"type" : "text", "text" : "\u{1F683}\u{1F4A4} " + tweet.text}));
+    return tweets.map(tweet => {
+	tweet.text = tweet.text.replace(/【運行情報】/, '【運行情報】\n')
+	tweet.text = tweet.text.replace(/#京急 /, '')
+	tweet.text = tweet.text.replace(/#keikyu /, '')
+	return {
+	    "type" : "text",
+	    "text" : "\u{1F683}\u{1F4A4} " + tweet.text
+	}
+    });
 }
