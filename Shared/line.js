@@ -77,7 +77,10 @@ function _get_profile(user_id)
 function _validate_signature(signature, body)
 {
     const crypto = require("crypto");
-    return signature == crypto.createHmac('sha256', process.env.LINE_CHANNEL_SECRET).update(new Buffer(JSON.stringify(body), 'utf8')).digest('base64');
+    return signature == crypto.
+	createHmac('sha256', process.env.LINE_CHANNEL_SECRET).
+	update(Buffer.from(JSON.stringify(body))).
+	digest('base64');
 }
 
 /*
