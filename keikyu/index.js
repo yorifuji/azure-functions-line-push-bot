@@ -48,7 +48,7 @@ function main(context)
 function filter_timeline(tweets)
 {
     tweets = tweets
-        .filter(tweet => tweet.text.indexOf('【運行情報】'))
+        .filter(tweet => tweet.text.match(/【運行情報】/))
         .filter(tweet => (new Date() - new Date(tweet.created_at)) / 1000 <= 60 * 10)
     return tweets.length ? Promise.resolve(tweets) : Promise.reject("no delay");
 }
