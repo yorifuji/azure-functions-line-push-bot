@@ -47,7 +47,7 @@ function main(context)
 
 function filter_timeline(tweets)
 {
-    tweets = tweets
+    tweets = tweets.reverse()
         .filter(tweet => tweet.text.indexOf('【ブルーライン】運行情報') == 0)
         .filter(tweet => (new Date() - new Date(tweet.created_at)) / 1000 <= 60 * 10);
     return tweets.length ? Promise.resolve(tweets) : Promise.reject("no delay");
