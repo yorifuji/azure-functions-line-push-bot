@@ -36,7 +36,7 @@ function main(context)
     const query = 
           {
               "screen_name" : "keikyu_official",
-              "count"       : 5
+              "count"       : 10
           };
 
     const since_id = twitter.get_since_id(context, query.screen_name);
@@ -74,7 +74,7 @@ function filter_timeline(tweets)
 function format_message(tweets)
 {
     return tweets.map(tweet => {
-        tweet.text = tweet.text.replace(/【運行情報】/, '【運行情報】\n')
+        tweet.text = tweet.text.replace(/【運行情報】/, '京急運行情報\n')
         tweet.text = tweet.text.replace(/#京急 /, '')
         tweet.text = tweet.text.replace(/#keikyu /, '')
         return {

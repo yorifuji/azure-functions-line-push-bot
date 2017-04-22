@@ -14,9 +14,18 @@ if (require.main === module) {
     var context = {
         log : console.log,
         done: () => {
-            console.log(context.bindings.outputQueueItem);
+            console.log(context.bindings);
         },
-        bindings : {}
+        bindings : {
+            inputDocument : [
+                {
+                    "id" : "yokohama_koutuu",
+                    "since_id" : "855200443386929152"
+                }
+            ],
+            outputDocument : [
+            ]
+        }
     };
     main(context);
 }
@@ -27,7 +36,7 @@ function main(context)
     const query = 
           {
               "screen_name" : "yokohama_koutuu",
-              "count"       : 5
+              "count"       : 10
           };
 
     const since_id = twitter.get_since_id(context, query.screen_name);
