@@ -5,13 +5,30 @@
       "name": "myTimer",
       "type": "timerTrigger",
       "direction": "in",
-      "schedule": "0 */10 0,7-11,23 * * *"
+      "schedule": "0 */5 0,7-11,23 * * *"
     },
     {
       "type": "queue",
       "name": "outputQueueItem",
       "queueName": "outgoing-queue",
       "connection": "AzureWebJobsDashboard",
+      "direction": "out"
+    },
+    {
+      "type": "documentDB",
+      "name": "inputDocument",
+      "databaseName": "twitter",
+      "collectionName": "MyCollection",
+      "connection": "yorifuji-line-bot-db2_DOCUMENTDB",
+      "direction": "in"
+    },
+    {
+      "type": "documentDB",
+      "name": "outputDocument",
+      "databaseName": "twitter",
+      "collectionName": "MyCollection",
+      "createIfNotExists": true,
+      "connection": "yorifuji-line-bot-db2_DOCUMENTDB",
       "direction": "out"
     }
   ]

@@ -27,10 +27,19 @@ function main(context)
     const query = 
           {
               "screen_name" : "yokohama_koutuu",
-              "count"       : 20
+              "count"       : 5
           };
 
+    const since_id = twitter.get_since_id(context, query.screen_name);
+    if (since_id) query["since_id"] = since_id;
+    context.log(query);
+
+    context.bindings.outputDocument = context.bindings.inputDocument;
+
     twitter.get_timeline(query)
+        .then(tweets => {
+            return twitter.save_since_id(context, tweets);
+        })
         .then(filter_timeline)
         .then(format_message)
         .then(messages => {
