@@ -37,6 +37,34 @@ function _get_timeline(query) {
     });
 }
 
+function _save_since_id(context, tweets)
+{
+    return new Promise(resolve => {
+        if (tweets.length) {
+            const screen_name = tweets[0].user.screen_name;
+            const id_str = tweets[0].id_str;
+            context.log(screen_name)
+            context.log(id_str)
+            for (var i = 0; i < context.bindings.inputDocument.length; i++) {
+                if (context.bindings.inputDocument[i].id == screen_name) {
+                    context.bindings.outputDocument[i].since_id = id_str;
+                    break;
+                }
+            }
+        }
+        resolve(tweets)
+    });
+}
+
+function _get_since_id(context, name)
+{
+    let since_id = null;
+    context.bindings.inputDocument.forEach(db => {
+        if (db.id == name) since_id = db.since_id;
+    });
+    return since_id;
+}
+
 /*
   exports
 */
@@ -44,6 +72,8 @@ function _get_timeline(query) {
 var twitter = function() {
 }
 twitter.get_timeline = _get_timeline;
+twitter.save_since_id = _save_since_id;
+twitter.get_since_id = _get_since_id;
 module.exports = twitter;
 
 /*

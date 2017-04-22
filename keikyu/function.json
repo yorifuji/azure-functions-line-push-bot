@@ -13,6 +13,23 @@
       "queueName": "outgoing-queue",
       "connection": "AzureWebJobsDashboard",
       "direction": "out"
+    },
+    {
+      "type": "documentDB",
+      "name": "inputDocument",
+      "databaseName": "twitter",
+      "collectionName": "MyCollection",
+      "connection": "yorifuji-line-bot-db2_DOCUMENTDB",
+      "direction": "in"
+    },
+    {
+      "type": "documentDB",
+      "name": "outputDocument",
+      "databaseName": "twitter",
+      "collectionName": "MyCollection",
+      "createIfNotExists": true,
+      "connection": "yorifuji-line-bot-db2_DOCUMENTDB",
+      "direction": "out"
     }
   ]
 }
