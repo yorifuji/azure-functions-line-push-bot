@@ -36,7 +36,10 @@ function main(context)
     const query = 
           {
               "screen_name" : "keikyu_official",
-              "count"       : 5
+              "trim_user"   : true,
+              "include_rts" : false,
+              "count"       : 5,
+              "contributor_details" : false
           };
 
     const since_id = twitter.get_since_id(context, query.screen_name);

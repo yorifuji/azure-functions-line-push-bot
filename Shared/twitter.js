@@ -86,11 +86,15 @@ if (require.main === module) {
     const query = 
           {
               "screen_name" : "twitterapi",
-              "count"       : 10
+              "count"       : 1,
+              "trim_user"   : true,
+              "contributor_details" : false,
+              "include_rts" : false
           };
 
     twitter.get_timeline(query)
         .then(tweets => {
+            console.log(tweets)
             console.log(tweets.map(tweet => tweet.text))
             console.log(tweets.map(tweet => tweet.created_at))
         })
