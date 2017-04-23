@@ -7,7 +7,7 @@ module.exports = function (context, myTimer) {
         context.log('JavaScript is running late!');
     }
     context.log('JavaScript timer trigger function ran!', timeStamp);   
-    main(context);
+    return main(context);
 };
 
 if (require.main === module) {
@@ -36,7 +36,7 @@ function main(context)
     const query = 
           {
               "screen_name" : "yokohama_koutuu",
-              "count"       : 10
+              "count"       : 5
           };
 
     const since_id = twitter.get_since_id(context, query.screen_name);
@@ -45,28 +45,29 @@ function main(context)
 
     context.bindings.outputDocument = context.bindings.inputDocument;
 
-    twitter.get_timeline(query)
+    return twitter.get_timeline(query)
         .then(tweets => {
             return twitter.save_since_id(context, tweets);
         })
         .then(filter_timeline)
-        .then(format_message)
-        .then(messages => {
-            context.bindings.outputQueueItem = {
-                "to"       : process.env.LINE_PUSH_TO,
-                "messages" : messages
-            };
-            context.done();
-        })
-        .catch(res => {
-            context.done();
+        .then(tweets => {
+            if (tweets.length) {
+                context.bindings.outputQueueItem = {
+                    "to"       : process.env.LINE_PUSH_TO,
+                    "messages" : format_message(tweets)
+                }
+                context.bindings.outputSlackQueue = tweets.map(tweet => {
+                    return {
+                        "text" : tweet.text
+                    }
+                })
+            }
         })
 }
 
 function filter_timeline(tweets)
 {
-    tweets = tweets.reverse().filter(tweet => tweet.text.match(/【ブルーライン】運行情報/));
-    return tweets.length ? Promise.resolve(tweets) : Promise.reject("no delay");
+    return tweets.reverse().filter(tweet => tweet.text.match(/【ブルーライン】運行情報/));
 }
 
 function format_message(tweets)

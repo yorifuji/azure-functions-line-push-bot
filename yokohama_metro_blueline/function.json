@@ -15,6 +15,13 @@
       "direction": "out"
     },
     {
+      "type": "queue",
+      "name": "outputSlackQueue",
+      "queueName": "outgoing-slack-queue",
+      "connection": "AzureWebJobsDashboard",
+      "direction": "out"
+    },
+    {
       "type": "documentDB",
       "name": "inputDocument",
       "databaseName": "twitter",
