@@ -36,7 +36,7 @@ function main(context)
     const query = 
           {
               "screen_name" : "keikyu_official",
-              "trim_user"   : true,
+//              "trim_user"   : true,
               "include_rts" : false,
               "count"       : 5,
               "contributor_details" : false
