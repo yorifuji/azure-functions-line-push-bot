@@ -59,11 +59,7 @@ function main(context)
                     "to"       : process.env.LINE_PUSH_TO,
                     "messages" : format_message(tweets)
                 }
-                context.bindings.outputSlackQueue = tweets.map(tweet => {
-                    return {
-                        "text" : tweet.text
-                    }
-                })
+                context.bindings.outputSlackQueue = format_message_for_slack(tweets)
             }
         })
 }
@@ -71,7 +67,7 @@ function main(context)
 function filter_timeline(tweets)
 {
     return tweets
-	.filter(tweet => (new Date() - new Date(tweet.created_at)) <= 60 * 5 * 1000)
+//	.filter(tweet => (new Date() - new Date(tweet.created_at)) <= 60 * 5 * 1000)
 	.reverse().filter(tweet => tweet.text.match(/【運行情報】/));
 }
 
@@ -84,6 +80,16 @@ function format_message(tweets)
         return {
             "type" : "text",
             "text" : "\u{1F683}\u{1F4A4} " + tweet.text
+        }
+    })
+}
+
+function format_message_for_slack(tweets)
+{
+    return tweets.map(tweet => {
+        tweet.text = tweet.text.replace(/(#京急 |#keikyu )/, '')
+        return {
+            "text" : ":train::zzz: " + tweet.text
         }
     })
 }
