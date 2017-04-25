@@ -87,10 +87,9 @@ function format_message(tweets)
 function format_message_for_slack(tweets)
 {
     return tweets.map(tweet => {
-        tweet.text = tweet.text.replace(/(#京急 |#keikyu )/, '')
+        let text = tweet.text.replace(/(#京急 |#keikyu )/, '')
         return {
-//            "text" : ":train: :zzz: " + tweet.text
-            "text" : tweet.text
+            "text" : ":train: :zzz: " + text
         }
     })
 }
