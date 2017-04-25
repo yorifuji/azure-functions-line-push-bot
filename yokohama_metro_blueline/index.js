@@ -70,7 +70,9 @@ function main(context)
 
 function filter_timeline(tweets)
 {
-    return tweets.reverse().filter(tweet => tweet.text.match(/【ブルーライン】運行情報/));
+    return tweets
+	.filter(tweet => (new Date() - new Date(tweet.created_at)) <= 60 * 5 * 1000)
+	.reverse().filter(tweet => tweet.text.match(/【ブルーライン】運行情報/));
 }
 
 function format_message(tweets)
