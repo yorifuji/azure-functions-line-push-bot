@@ -3,13 +3,11 @@
   slack library.
 */
 
-function _push(webhook_url, payload)
+function _push(webhook_url, json)
 {
     const https = require("https");
     const url   = require("url").parse(webhook_url);
 
-    const data = "payload=" + JSON.stringify(payload);
-    
     return new Promise((resolve,reject) => {
 	// An object of options to indicate where to post to
 	const options = {
@@ -17,8 +15,7 @@ function _push(webhook_url, payload)
             path    : url.path,
             method  : 'POST',
             headers : {
-		'Content-Type': 'application/x-www-form-urlencoded',
-		'Content-Length': Buffer.byteLength(data)
+		'Content-Type': 'application/json'
             }
 	};
     
@@ -40,7 +37,7 @@ function _push(webhook_url, payload)
             reject(new Error(e));
 	});
         
-        req.write(data);
+        req.write(JSON.stringify(json));
         req.end();
     });
 }
@@ -61,7 +58,7 @@ module.exports = slack;
 if (require.main === module) {
 
     const slack = require("./slack.js");
-    slack.push(process.env.SLACK_WEBHOOK_URL, { "text" : "hello"})
+    slack.push(process.env.SLACK_WEBHOOK_URL, { "text" : ":smile: hello"})
         .then(console.log)
         .catch(console.log)
 }
