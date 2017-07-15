@@ -27,15 +27,16 @@ function main(context)
     const query = 
           {
               "screen_name" : "eigaie_bot",
-              "count"       : 1
+              "count"       : 10
           };
 
     twitter.get_timeline(query)
+        .then(filter_timeline)
         .then(format_message)
         .then(message => {
             context.bindings.outputQueueItem = {
                 "to"       : process.env.LINE_PUSH_TO,
-                "messages" : [ message ]
+                "messages" : message
             };
             context.done();
         })
@@ -45,12 +46,19 @@ function main(context)
         })
 }
 
+function filter_timeline(tweets)
+{
+    let today = new Date()
+    today.setHours(0, 0, 0, 0)
+    return tweets.filter(tweet => new Date(tweet.created_at) >= today)
+}
+
 function format_message(tweets)
 {
-    let tweet = tweets[0].text;
-    tweet = tweet.slice(0, tweet.search("\n")) + "\n" + "https://kinro.jointv.jp/"
-    return {
-        "type" : "text",
-        "text" : "\u{1F4FA}" + tweet
-    }
+    return tweets.map( tweet => {
+        return {
+            "type" : "text",
+            "text" : "\u{1F4FA}" + tweet.text
+        }
+    })
 }
