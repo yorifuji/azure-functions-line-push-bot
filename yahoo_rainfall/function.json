@@ -4,7 +4,7 @@
       "name": "myTimer",
       "type": "timerTrigger",
       "direction": "in",
-      "schedule": "0 3,8,13,18,23,28,33,38,43,48,53,58 0-11,23 * * *"
+      "schedule": "0 3,8,13,18,23,28,33,38,43,48,53,58 7-20 * * *"
     },
     {
       "type": "queue",
