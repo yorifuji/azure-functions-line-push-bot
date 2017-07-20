@@ -31,6 +31,17 @@ function main(context)
 
     yahoo.get_weather_data(api_key, lon, lat)
         .then(yahoo.get_rainfall_data)
+	.then(data => {
+	    let o = yahoo.get_latest_observation(data);
+	    let tbl_data = {
+		"partitionKey"    : "rainfall",
+		"rowKey"          : Date(),
+		"date"            : o["Date"],
+		"rainfall"        : o["Rainfall"],
+	    }
+	    context.bindings.rainfall = tbl_data;
+	    return data;
+	})
         .then(yahoo.make_rainfall_message)
         .then(messages => {
             if (messages.length) {

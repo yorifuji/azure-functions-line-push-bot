@@ -7,6 +7,13 @@
       "schedule": "0 3,8,13,18,23,28,33,38,43,48,53,58 7-20 * * *"
     },
     {
+      "type": "table",
+      "name": "rainfall",
+      "tableName": "rainfall",
+      "connection": "AzureWebJobsDashboard",
+      "direction": "out"
+    },
+    {
       "type": "queue",
       "name": "outputQueueItem",
       "queueName": "outgoing-queue",

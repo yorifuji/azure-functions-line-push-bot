@@ -34,6 +34,12 @@ function _get_rainfall_data(data) {
     return data.Feature[0].Property.WeatherList.Weather;
 }
 
+function _get_latest_observation(data)
+{
+    var o = data.filter(e => e["Type"] == "observation");
+    return o[o.length - 1];
+}
+
 // 0: nothing changed, 1: going to rainfall, 2: stop rainfall
 function _get_rainfall_status(data) {
     var w_o = data.filter(e => e["Type"] == "observation");
@@ -81,6 +87,7 @@ var yahoo_rainfall = function() {
 }
 yahoo_rainfall.get_weather_data      = _get_weather_data;
 yahoo_rainfall.get_rainfall_data     = _get_rainfall_data;
+yahoo_rainfall.get_latest_observation = _get_latest_observation;
 yahoo_rainfall.get_rainfall_status   = _get_rainfall_status;
 yahoo_rainfall.make_rainfall_message = _make_rainfall_message;
 
