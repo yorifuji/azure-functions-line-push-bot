@@ -57,8 +57,9 @@ function _save_since_id(context, tweets)
 
 function _get_since_id(context, name)
 {
+    context.log(name);
     try {
-	return context.bindings.inputBlob.name;
+	return context.bindings.inputBlob[name];
     }
     catch (e) {
 	context.log(e)
