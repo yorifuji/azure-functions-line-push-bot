@@ -47,7 +47,7 @@ function _save_since_id(context, tweets)
             context.log(id_str)
 	    try {
 		let blob = context.bindings.inputBlob;
-		blob[screen_name] = id_str;
+		blob["" + screen_name] = id_str;
 		context.bindings.outputBlob = blob;
 	    } catch (e) {
 		context.log(e)
