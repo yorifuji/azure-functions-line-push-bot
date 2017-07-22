@@ -42,6 +42,7 @@ function main(context)
               "contributor_details" : false
           };
 
+    context.log(query.screen_name);
     const since_id = twitter.get_since_id(context, query.screen_name);
     if (since_id) query["since_id"] = since_id;
     context.log(query);
