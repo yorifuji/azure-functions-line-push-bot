@@ -45,12 +45,11 @@ function _save_since_id(context, tweets)
             const id_str = tweets[0].id_str;
             context.log(screen_name)
             context.log(id_str)
-            for (var i = 0; i < context.bindings.inputDocument.length; i++) {
-                if (context.bindings.inputDocument[i].id == screen_name) {
-                    context.bindings.outputDocument[i].since_id = id_str;
-                    break;
-                }
-            }
+	    try {
+		context.bindings.outputBlob[screen_name] = id_str;
+	    } catch (e) {
+		context.log(e)
+	    }
         }
         resolve(tweets)
     });
@@ -58,11 +57,13 @@ function _save_since_id(context, tweets)
 
 function _get_since_id(context, name)
 {
-    let since_id = null;
-    context.bindings.inputDocument.forEach(db => {
-        if (db.id == name) since_id = db.since_id;
-    });
-    return since_id;
+    try {
+	return context.bindings.inputBlob.name;
+    }
+    catch (e) {
+	context.log(e)
+	return null;
+    }
 }
 
 /*
