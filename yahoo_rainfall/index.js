@@ -32,13 +32,17 @@ function main(context)
     yahoo.get_weather_data(api_key, lon, lat)
         .then(yahoo.get_rainfall_data)
 	.then(data => {
-	    let o = yahoo.get_latest_observation(data);
+	    var o = data.filter(e => e["Type"] == "observation");
+	    var f = data.filter(e => e["Type"] == "forecast"   );
 	    let tbl_data = {
 		"partitionKey"    : "rainfall",
 		"rowKey"          : Date(),
-		"date"            : o["Date"],
-		"rainfall"        : o["Rainfall"],
+		"date"            : o[o.length - 1]["Date"],
+		"rainfall"        : o[o.length - 1]["Rainfall"],
+		"rainfall_prev"   : o[o.length - 2]["Rainfall"],
+		"forecast"        : f[0]["Rainfall"]
 	    }
+	    context.log(tbl_data);
 	    context.bindings.rainfall = tbl_data;
 	    return data;
 	})
