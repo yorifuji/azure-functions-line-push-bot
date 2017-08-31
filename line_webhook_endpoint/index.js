@@ -75,7 +75,8 @@ function get_train(is_up, num) {
     let text = "";
     trains.forEach(tr => {
         let diff = parseInt(tr.time.slice(0,2)) * 60 + parseInt(tr.time.slice(-2)) - base
-        text += `+${diff} 分後(${tr.time}) ${tr.type} ${tr.goto}行き\n`
+	let icon = tr.type != "普通" ? "\u{1F683}" : ""
+        text += `+${diff} 分後(${tr.time}) ${icon}${tr.type} ${tr.goto}行き\n`
     })
     return text;
 }
