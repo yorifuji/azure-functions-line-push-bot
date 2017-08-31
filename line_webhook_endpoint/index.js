@@ -64,19 +64,27 @@ function get_train(is_up, num) {
     const keikyu_timeline = require("../Shared/keikyu_timeline.js");
     
     const date = new Date()
-    const base = date.getHours() * 100 + date.getMinutes()
+    const base = date.getHours() * 60 + date.getMinutes()
     
     timeline = is_up ? keikyu_timeline.up : keikyu_timeline.down
     let trains = []
     timeline.forEach(tl => {
-        if (parseInt(tl.time) >= base && trains.length < num) trains.push(tl)
+        if (parseInt(tl.time.slice(0,2)) * 60 + parseInt(tl.time.slice(-2)) >= base && trains.length < num) trains.push(tl)
     })
     
     let text = "";
     trains.forEach(tr => {
-        text += `+${tr.time - base} 分後(${tr.time}) ${tr.type} ${tr.goto}行き\n`
+        let diff = parseInt(tr.time.slice(0,2)) * 60 + parseInt(tr.time.slice(-2)) - base
+        text += `+${diff} 分後(${tr.time}) ${tr.type} ${tr.goto}行き\n`
     })
     return text;
 }
 
     
+/*
+  test code
+*/
+
+if (require.main === module) {
+    console.log(get_train(true, 10))
+}
