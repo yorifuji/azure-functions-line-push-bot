@@ -22,20 +22,17 @@
       "direction": "out"
     },
     {
-      "type": "documentDB",
-      "name": "inputDocument",
-      "databaseName": "twitter",
-      "collectionName": "MyCollection",
-      "connection": "yorifuji-line-bot-db2_DOCUMENTDB",
+      "type": "blob",
+      "name": "inputBlob",
+      "path": "twitter/data",
+      "connection": "AzureWebJobsDashboard",
       "direction": "in"
     },
     {
-      "type": "documentDB",
-      "name": "outputDocument",
-      "databaseName": "twitter",
-      "collectionName": "MyCollection",
-      "createIfNotExists": true,
-      "connection": "yorifuji-line-bot-db2_DOCUMENTDB",
+      "type": "blob",
+      "name": "outputBlob",
+      "path": "twitter/data",
+      "connection": "AzureWebJobsDashboard",
       "direction": "out"
     }
   ]

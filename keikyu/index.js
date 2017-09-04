@@ -46,8 +46,6 @@ function main(context)
     if (since_id) query["since_id"] = since_id;
     context.log(query);
 
-    context.bindings.outputDocument = context.bindings.inputDocument;
-
     return twitter.get_timeline(query)
         .then(tweets => {
             return twitter.save_since_id(context, tweets)
