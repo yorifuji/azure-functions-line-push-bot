@@ -60,7 +60,9 @@ function main(context)
                     "to"       : process.env.LINE_PUSH_TO,
                     "messages" : messages
                 };
-		context.bindings.outputBlob["last_date"] = new Date();
+		context.bindings.outputBlob = {
+		    "last_date" : new Date()
+		}
             }
             context.done();
         })
