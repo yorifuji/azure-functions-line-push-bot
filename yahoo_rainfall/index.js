@@ -29,6 +29,13 @@ function main(context)
     const lon = process.env.LONGITUDE;
     const lat = process.env.LATITUDE;
 
+    const last_date = null;
+    try {
+	last_date = context.bindings.inputBlob["last_date"];
+    } catch(e) {
+    }
+    if (last_date && (last_date + 1000 * 60 * 60 > new Date())) return;
+    
     yahoo.get_weather_data(api_key, lon, lat)
         .then(yahoo.get_rainfall_data)
 	.then(data => {
@@ -53,6 +60,7 @@ function main(context)
                     "to"       : process.env.LINE_PUSH_TO,
                     "messages" : messages
                 };
+		context.bindings.outputBlob["last_date"] = new Date();
             }
             context.done();
         })
