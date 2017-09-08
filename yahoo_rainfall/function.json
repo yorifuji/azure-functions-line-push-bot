@@ -23,14 +23,14 @@
     {
       "type": "blob",
       "name": "inputBlob",
-      "path": "twitter/data",
+      "path": "rainfall/rainfall",
       "connection": "AzureWebJobsDashboard",
       "direction": "in"
     },
     {
       "type": "blob",
       "name": "outputBlob",
-      "path": "twitter/data",
+      "path": "rainfall/rainfall",
       "connection": "AzureWebJobsDashboard",
       "direction": "out"
     }
