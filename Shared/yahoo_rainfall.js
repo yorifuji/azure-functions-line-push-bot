@@ -43,11 +43,11 @@ function _get_latest_observation(data)
 // 0: nothing changed, 1: going to rainfall, 2: stop rainfall
 function _get_rainfall_status(data) {
     var w_o = data.filter(e => e["Type"] == "observation");
-    var w_c = data.filter(e => e["Type"] == "forecast"   );
     var w_prev1 = w_o[w_o.length - 1];
     var w_prev2 = w_o[w_o.length - 2];
-    return w_prev2["Rainfall"] == 0 && w_prev1["Rainfall"] ? 1 : 
-        w_prev2["Rainfall"] && w_prev1["Rainfall"] == 0 ? 2 : 0;
+    var w_prev3 = w_o[w_o.length - 3];
+    return w_prev1["Rainfall"] && w_prev2["Rainfall"] && !w_prev3["Rainfall"] ? 1 :
+        !w_prev1["Rainfall"] && !w_prev2["Rainfall"] && w_prev3["Rainfall"] ? 2 : 0;
 }
 
 function _make_rainfall_message(data)
@@ -116,46 +116,80 @@ if (require.main === module) {
         .then(console.log)
         .catch(console.log);
 
-    Promise.resolve(make_dummy_rainfall_data(0, 0))
-        .then(yr.get_rainfall_status)
-        .then(console.log)
-        .catch(console.log);
-    _test_rainfall()
-        .then(yr.get_rainfall_status)
-        .then(console.log)
-        .catch(console.log);
-    _test_rainfall()
+    Promise.resolve(_test_data_rainfall_begin())
         .then(yr.make_rainfall_message)
         .then(console.log)
-        .catch(console.log);
-    _test_clearsky()
-        .then(yr.get_rainfall_status)
-        .then(console.log)
-        .catch(console.log);
-    _test_clearsky()
+        .catch(console.log)
+    Promise.resolve(_test_data_rainfall_end())
         .then(yr.make_rainfall_message)
         .then(console.log)
-        .catch(console.log);
+        .catch(console.log)
+    Promise.resolve(_test_data_rainfall_none_1())
+        .then(yr.make_rainfall_message)
+        .then(console.log)
+        .catch(console.log)
+    Promise.resolve(_test_data_rainfall_none_2())
+        .then(yr.make_rainfall_message)
+        .then(console.log)
+        .catch(console.log)
 }
 
-function _test_rainfall(data)
-{
-    return Promise.resolve(make_dummy_rainfall_data(0, 1.23));
-}
-
-function _test_clearsky(data)
-{
-    return Promise.resolve(make_dummy_rainfall_data(1, 0));
-}
-
-function make_dummy_rainfall_data(a, b)
+function _test_data_rainfall_begin()
 {
     return [
         { Type: 'observation', Date: '201610090040', Rainfall: 0 },
         { Type: 'observation', Date: '201610090045', Rainfall: 0 },
         { Type: 'observation', Date: '201610090050', Rainfall: 0 },
-        { Type: 'observation', Date: '201610090055', Rainfall: a },
-        { Type: 'observation', Date: '201610090100', Rainfall: b },
+        { Type: 'observation', Date: '201610090055', Rainfall: 1 },
+        { Type: 'observation', Date: '201610090100', Rainfall: 1 },
+        { Type: 'forecast', Date: '201610090105', Rainfall: 0 },
+        { Type: 'forecast', Date: '201610090110', Rainfall: 0 },
+        { Type: 'forecast', Date: '201610090115', Rainfall: 0 },
+        { Type: 'forecast', Date: '201610090120', Rainfall: 0 },
+        { Type: 'forecast', Date: '201610090125', Rainfall: 0 }
+    ]
+}
+
+function _test_data_rainfall_end()
+{
+    return [
+        { Type: 'observation', Date: '201610090040', Rainfall: 1 },
+        { Type: 'observation', Date: '201610090045', Rainfall: 1 },
+        { Type: 'observation', Date: '201610090050', Rainfall: 1 },
+        { Type: 'observation', Date: '201610090055', Rainfall: 0 },
+        { Type: 'observation', Date: '201610090100', Rainfall: 0 },
+        { Type: 'forecast', Date: '201610090105', Rainfall: 0 },
+        { Type: 'forecast', Date: '201610090110', Rainfall: 0 },
+        { Type: 'forecast', Date: '201610090115', Rainfall: 0 },
+        { Type: 'forecast', Date: '201610090120', Rainfall: 0 },
+        { Type: 'forecast', Date: '201610090125', Rainfall: 0 }
+    ]
+}
+
+function _test_data_rainfall_none_1()
+{
+    return [
+        { Type: 'observation', Date: '201610090040', Rainfall: 0 },
+        { Type: 'observation', Date: '201610090045', Rainfall: 0 },
+        { Type: 'observation', Date: '201610090050', Rainfall: 0 },
+        { Type: 'observation', Date: '201610090055', Rainfall: 0 },
+        { Type: 'observation', Date: '201610090100', Rainfall: 1 },
+        { Type: 'forecast', Date: '201610090105', Rainfall: 0 },
+        { Type: 'forecast', Date: '201610090110', Rainfall: 0 },
+        { Type: 'forecast', Date: '201610090115', Rainfall: 0 },
+        { Type: 'forecast', Date: '201610090120', Rainfall: 0 },
+        { Type: 'forecast', Date: '201610090125', Rainfall: 0 }
+    ]
+}
+
+function _test_data_rainfall_none_2()
+{
+    return [
+        { Type: 'observation', Date: '201610090040', Rainfall: 1 },
+        { Type: 'observation', Date: '201610090045', Rainfall: 1 },
+        { Type: 'observation', Date: '201610090050', Rainfall: 1 },
+        { Type: 'observation', Date: '201610090055', Rainfall: 1 },
+        { Type: 'observation', Date: '201610090100', Rainfall: 0 },
         { Type: 'forecast', Date: '201610090105', Rainfall: 0 },
         { Type: 'forecast', Date: '201610090110', Rainfall: 0 },
         { Type: 'forecast', Date: '201610090115', Rainfall: 0 },
