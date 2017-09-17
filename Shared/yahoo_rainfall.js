@@ -43,11 +43,10 @@ function _get_latest_observation(data)
 // 0: nothing changed, 1: going to rainfall, 2: stop rainfall
 function _get_rainfall_status(data) {
     var w_o = data.filter(e => e["Type"] == "observation");
-    var w_prev1 = w_o[w_o.length - 1];
-    var w_prev2 = w_o[w_o.length - 2];
-    var w_prev3 = w_o[w_o.length - 3];
-    return w_prev1["Rainfall"] && w_prev2["Rainfall"] && !w_prev3["Rainfall"] ? 1 :
-        !w_prev1["Rainfall"] && !w_prev2["Rainfall"] && w_prev3["Rainfall"] ? 2 : 0;
+    var w1 = w_o[w_o.length - 1]["Rainfall"];
+    var w2 = w_o[w_o.length - 2]["Rainfall"];
+    var w3 = w_o[w_o.length - 3]["Rainfall"];
+    return (w1 && w2 && !w3) ? 1 : 0;
 }
 
 function _make_rainfall_message(data)
